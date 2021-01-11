@@ -4,7 +4,7 @@ BRANCH=$(shell git symbolic-ref -q --short HEAD)
 REVISION=$(shell git rev-parse --short HEAD)
 BUILD_DATE=$(shell date +%FT%T%Z)
 PROTO_FILES=$(shell find . -name *.proto)
-KRATOS=$(GOPATH)/pkg/mod/github.com/go-kratos/kratos/v2@v2.0.0-20201205170920-f2b7f99a678c
+KRATOS=$(GOPATH)/pkg/mod/github.com/go-kratos/kratos/v2@v2.0.0-20210110075245-76231b7017de
 
 .PHONY: init
 init:
@@ -15,6 +15,7 @@ init:
 proto:
 	protoc --proto_path=. \
            --proto_path=$(KRATOS)/api \
+          --proto_path=$(KRATOS)/third_party \
            --proto_path=$(GOPATH)/src \
            --go_out=paths=source_relative:. \
            --go-grpc_out=paths=source_relative:. \
