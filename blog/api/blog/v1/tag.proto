@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package api.blog.v1;
+
+option go_package = "blog/api/blog/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.blog.v1";
+
+service Tag {
+    rpc CreateTag (CreateTagRequest) returns (CreateTagReply);
+    rpc UpdateTag (UpdateTagRequest) returns (UpdateTagReply);
+    rpc DeleteTag (DeleteTagRequest) returns (DeleteTagReply);
+    rpc GetTag (GetTagRequest) returns (GetTagReply);
+    rpc ListTag (ListTagRequest) returns (ListTagReply);
+}
+
+message CreateTagRequest {
+    string slug = 1;
+    string name = 2;
+}
+message CreateTagReply {}
+
+message UpdateTagRequest {}
+message UpdateTagReply {}
+
+message DeleteTagRequest {}
+message DeleteTagReply {}
+
+message GetTagRequest {}
+message GetTagReply {}
+
+message ListTagRequest {}
+message ListTagReply {}
