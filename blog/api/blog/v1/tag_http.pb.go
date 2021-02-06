@@ -13,7 +13,7 @@ import (
 // context./http.
 const _ = http1.SupportPackageIsVersion1
 
-type TagHTTPServer interface {
+type TagService interface {
 	CreateTag(context.Context, *CreateTagRequest) (*CreateTagReply, error)
 
 	DeleteTag(context.Context, *DeleteTagRequest) (*DeleteTagReply, error)
@@ -25,114 +25,102 @@ type TagHTTPServer interface {
 	UpdateTag(context.Context, *UpdateTagRequest) (*UpdateTagReply, error)
 }
 
-func RegisterTagHTTPServer(s http1.ServiceRegistrar, srv TagHTTPServer) {
-	s.RegisterService(&_HTTP_Tag_serviceDesc, srv)
-}
+func RegisterTagHTTPServer(s *http1.Server, srv TagService) {
+	r := s.Route("/")
 
-func _HTTP_Tag_CreateTag_0(srv interface{}, ctx context.Context, req *http.Request) (interface{}, error) {
-	var in CreateTagRequest
+	r.POST("/api.blog.v1.Tag/CreateTag", func(res http.ResponseWriter, req *http.Request) {
+		in := new(CreateTagRequest)
 
-	if err := http1.PopulateForm(&in, req); err != nil {
-		return nil, err
-	}
+		if err := http1.BindForm(req, in); err != nil {
+			s.Error(res, req, err)
+			return
+		}
 
-	out, err := srv.(TagServer).CreateTag(ctx, &in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
+		h := func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.(TagService).CreateTag(ctx, in)
+		}
+		out, err := s.Invoke(req.Context(), in, h)
+		if err != nil {
+			s.Error(res, req, err)
+			return
+		}
+		s.Encode(res, req, out)
+	})
 
-func _HTTP_Tag_UpdateTag_0(srv interface{}, ctx context.Context, req *http.Request) (interface{}, error) {
-	var in UpdateTagRequest
+	r.POST("/api.blog.v1.Tag/UpdateTag", func(res http.ResponseWriter, req *http.Request) {
+		in := new(UpdateTagRequest)
 
-	if err := http1.PopulateForm(&in, req); err != nil {
-		return nil, err
-	}
+		if err := http1.BindForm(req, in); err != nil {
+			s.Error(res, req, err)
+			return
+		}
 
-	out, err := srv.(TagServer).UpdateTag(ctx, &in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
+		h := func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.(TagService).UpdateTag(ctx, in)
+		}
+		out, err := s.Invoke(req.Context(), in, h)
+		if err != nil {
+			s.Error(res, req, err)
+			return
+		}
+		s.Encode(res, req, out)
+	})
 
-func _HTTP_Tag_DeleteTag_0(srv interface{}, ctx context.Context, req *http.Request) (interface{}, error) {
-	var in DeleteTagRequest
+	r.POST("/api.blog.v1.Tag/DeleteTag", func(res http.ResponseWriter, req *http.Request) {
+		in := new(DeleteTagRequest)
 
-	if err := http1.PopulateForm(&in, req); err != nil {
-		return nil, err
-	}
+		if err := http1.BindForm(req, in); err != nil {
+			s.Error(res, req, err)
+			return
+		}
 
-	out, err := srv.(TagServer).DeleteTag(ctx, &in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
+		h := func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.(TagService).DeleteTag(ctx, in)
+		}
+		out, err := s.Invoke(req.Context(), in, h)
+		if err != nil {
+			s.Error(res, req, err)
+			return
+		}
+		s.Encode(res, req, out)
+	})
 
-func _HTTP_Tag_GetTag_0(srv interface{}, ctx context.Context, req *http.Request) (interface{}, error) {
-	var in GetTagRequest
+	r.POST("/api.blog.v1.Tag/GetTag", func(res http.ResponseWriter, req *http.Request) {
+		in := new(GetTagRequest)
 
-	if err := http1.PopulateForm(&in, req); err != nil {
-		return nil, err
-	}
+		if err := http1.BindForm(req, in); err != nil {
+			s.Error(res, req, err)
+			return
+		}
 
-	out, err := srv.(TagServer).GetTag(ctx, &in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
+		h := func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.(TagService).GetTag(ctx, in)
+		}
+		out, err := s.Invoke(req.Context(), in, h)
+		if err != nil {
+			s.Error(res, req, err)
+			return
+		}
+		s.Encode(res, req, out)
+	})
 
-func _HTTP_Tag_ListTag_0(srv interface{}, ctx context.Context, req *http.Request) (interface{}, error) {
-	var in ListTagRequest
+	r.POST("/api.blog.v1.Tag/ListTag", func(res http.ResponseWriter, req *http.Request) {
+		in := new(ListTagRequest)
 
-	if err := http1.PopulateForm(&in, req); err != nil {
-		return nil, err
-	}
+		if err := http1.BindForm(req, in); err != nil {
+			s.Error(res, req, err)
+			return
+		}
 
-	out, err := srv.(TagServer).ListTag(ctx, &in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
+		h := func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.(TagService).ListTag(ctx, in)
+		}
+		out, err := s.Invoke(req.Context(), in, h)
+		if err != nil {
+			s.Error(res, req, err)
+			return
+		}
+		s.Encode(res, req, out)
+	})
 
-var _HTTP_Tag_serviceDesc = http1.ServiceDesc{
-	ServiceName: "api.blog.v1.Tag",
-	HandlerType: (*TagHTTPServer)(nil),
-	Methods: []http1.MethodDesc{
-
-		{
-			Path:    "/api.blog.v1.Tag/CreateTag",
-			Method:  "POST",
-			Handler: _HTTP_Tag_CreateTag_0,
-		},
-
-		{
-			Path:    "/api.blog.v1.Tag/UpdateTag",
-			Method:  "POST",
-			Handler: _HTTP_Tag_UpdateTag_0,
-		},
-
-		{
-			Path:    "/api.blog.v1.Tag/DeleteTag",
-			Method:  "POST",
-			Handler: _HTTP_Tag_DeleteTag_0,
-		},
-
-		{
-			Path:    "/api.blog.v1.Tag/GetTag",
-			Method:  "POST",
-			Handler: _HTTP_Tag_GetTag_0,
-		},
-
-		{
-			Path:    "/api.blog.v1.Tag/ListTag",
-			Method:  "POST",
-			Handler: _HTTP_Tag_ListTag_0,
-		},
-	},
-	Metadata: "api/blog/v1/tag.proto",
 }

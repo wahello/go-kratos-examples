@@ -13,7 +13,7 @@ import (
 // context./http.
 const _ = http1.SupportPackageIsVersion1
 
-type PostHTTPServer interface {
+type PostService interface {
 	CreatePost(context.Context, *CreatePostRequest) (*CreatePostReply, error)
 
 	DeletePost(context.Context, *DeletePostRequest) (*DeletePostReply, error)
@@ -25,114 +25,102 @@ type PostHTTPServer interface {
 	UpdatePost(context.Context, *UpdatePostRequest) (*UpdatePostReply, error)
 }
 
-func RegisterPostHTTPServer(s http1.ServiceRegistrar, srv PostHTTPServer) {
-	s.RegisterService(&_HTTP_Post_serviceDesc, srv)
-}
+func RegisterPostHTTPServer(s *http1.Server, srv PostService) {
+	r := s.Route("/")
 
-func _HTTP_Post_CreatePost_0(srv interface{}, ctx context.Context, req *http.Request) (interface{}, error) {
-	var in CreatePostRequest
+	r.POST("/api.blog.v1.Post/CreatePost", func(res http.ResponseWriter, req *http.Request) {
+		in := new(CreatePostRequest)
 
-	if err := http1.PopulateForm(&in, req); err != nil {
-		return nil, err
-	}
+		if err := http1.BindForm(req, in); err != nil {
+			s.Error(res, req, err)
+			return
+		}
 
-	out, err := srv.(PostServer).CreatePost(ctx, &in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
+		h := func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.(PostService).CreatePost(ctx, in)
+		}
+		out, err := s.Invoke(req.Context(), in, h)
+		if err != nil {
+			s.Error(res, req, err)
+			return
+		}
+		s.Encode(res, req, out)
+	})
 
-func _HTTP_Post_UpdatePost_0(srv interface{}, ctx context.Context, req *http.Request) (interface{}, error) {
-	var in UpdatePostRequest
+	r.POST("/api.blog.v1.Post/UpdatePost", func(res http.ResponseWriter, req *http.Request) {
+		in := new(UpdatePostRequest)
 
-	if err := http1.PopulateForm(&in, req); err != nil {
-		return nil, err
-	}
+		if err := http1.BindForm(req, in); err != nil {
+			s.Error(res, req, err)
+			return
+		}
 
-	out, err := srv.(PostServer).UpdatePost(ctx, &in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
+		h := func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.(PostService).UpdatePost(ctx, in)
+		}
+		out, err := s.Invoke(req.Context(), in, h)
+		if err != nil {
+			s.Error(res, req, err)
+			return
+		}
+		s.Encode(res, req, out)
+	})
 
-func _HTTP_Post_DeletePost_0(srv interface{}, ctx context.Context, req *http.Request) (interface{}, error) {
-	var in DeletePostRequest
+	r.POST("/api.blog.v1.Post/DeletePost", func(res http.ResponseWriter, req *http.Request) {
+		in := new(DeletePostRequest)
 
-	if err := http1.PopulateForm(&in, req); err != nil {
-		return nil, err
-	}
+		if err := http1.BindForm(req, in); err != nil {
+			s.Error(res, req, err)
+			return
+		}
 
-	out, err := srv.(PostServer).DeletePost(ctx, &in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
+		h := func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.(PostService).DeletePost(ctx, in)
+		}
+		out, err := s.Invoke(req.Context(), in, h)
+		if err != nil {
+			s.Error(res, req, err)
+			return
+		}
+		s.Encode(res, req, out)
+	})
 
-func _HTTP_Post_GetPost_0(srv interface{}, ctx context.Context, req *http.Request) (interface{}, error) {
-	var in GetPostRequest
+	r.POST("/api.blog.v1.Post/GetPost", func(res http.ResponseWriter, req *http.Request) {
+		in := new(GetPostRequest)
 
-	if err := http1.PopulateForm(&in, req); err != nil {
-		return nil, err
-	}
+		if err := http1.BindForm(req, in); err != nil {
+			s.Error(res, req, err)
+			return
+		}
 
-	out, err := srv.(PostServer).GetPost(ctx, &in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
+		h := func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.(PostService).GetPost(ctx, in)
+		}
+		out, err := s.Invoke(req.Context(), in, h)
+		if err != nil {
+			s.Error(res, req, err)
+			return
+		}
+		s.Encode(res, req, out)
+	})
 
-func _HTTP_Post_ListPost_0(srv interface{}, ctx context.Context, req *http.Request) (interface{}, error) {
-	var in ListPostRequest
+	r.POST("/api.blog.v1.Post/ListPost", func(res http.ResponseWriter, req *http.Request) {
+		in := new(ListPostRequest)
 
-	if err := http1.PopulateForm(&in, req); err != nil {
-		return nil, err
-	}
+		if err := http1.BindForm(req, in); err != nil {
+			s.Error(res, req, err)
+			return
+		}
 
-	out, err := srv.(PostServer).ListPost(ctx, &in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
+		h := func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.(PostService).ListPost(ctx, in)
+		}
+		out, err := s.Invoke(req.Context(), in, h)
+		if err != nil {
+			s.Error(res, req, err)
+			return
+		}
+		s.Encode(res, req, out)
+	})
 
-var _HTTP_Post_serviceDesc = http1.ServiceDesc{
-	ServiceName: "api.blog.v1.Post",
-	HandlerType: (*PostHTTPServer)(nil),
-	Methods: []http1.MethodDesc{
-
-		{
-			Path:    "/api.blog.v1.Post/CreatePost",
-			Method:  "POST",
-			Handler: _HTTP_Post_CreatePost_0,
-		},
-
-		{
-			Path:    "/api.blog.v1.Post/UpdatePost",
-			Method:  "POST",
-			Handler: _HTTP_Post_UpdatePost_0,
-		},
-
-		{
-			Path:    "/api.blog.v1.Post/DeletePost",
-			Method:  "POST",
-			Handler: _HTTP_Post_DeletePost_0,
-		},
-
-		{
-			Path:    "/api.blog.v1.Post/GetPost",
-			Method:  "POST",
-			Handler: _HTTP_Post_GetPost_0,
-		},
-
-		{
-			Path:    "/api.blog.v1.Post/ListPost",
-			Method:  "POST",
-			Handler: _HTTP_Post_ListPost_0,
-		},
-	},
-	Metadata: "api/blog/v1/post.proto",
 }

@@ -1,18 +1,21 @@
 package main
 
 import (
+	"flag"
 	"os"
 
-	pb "blog/api/blog/v1"
-	"blog/internal/service"
+	v1 "github.com/go-kratos/examples/blog/api/blog/v1"
+	"github.com/go-kratos/examples/blog/internal/service"
+
 	"github.com/go-kratos/kratos/v2"
+	grpcconf "github.com/go-kratos/kratos/v2/api/kratos/config/grpc"
+	httpconf "github.com/go-kratos/kratos/v2/api/kratos/config/http"
+	"github.com/go-kratos/kratos/v2/config"
+	"github.com/go-kratos/kratos/v2/config/source/file"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/log/stdlog"
-	servergrpc "github.com/go-kratos/kratos/v2/server/grpc"
-	serverhttp "github.com/go-kratos/kratos/v2/server/http"
-	grpctransport "github.com/go-kratos/kratos/v2/transport/grpc"
-	httptransport "github.com/go-kratos/kratos/v2/transport/http"
-	"google.golang.org/grpc"
+	"github.com/go-kratos/kratos/v2/transport/grpc"
+	"github.com/go-kratos/kratos/v2/transport/http"
 
 	_ "github.com/go-kratos/kratos/v2/encoding/json"
 	_ "github.com/go-kratos/kratos/v2/encoding/proto"
@@ -30,33 +33,58 @@ var (
 	BuildDate string
 )
 
+var flagconf string
+
+func init() {
+	flag.StringVar(&flagconf, "conf", "config.yaml", "config path, eg: -conf config.yaml")
+}
+
 func main() {
-	logger, err := stdlog.NewLogger(stdlog.Writer(os.Stdout))
-	if err != nil {
+	flag.Parse()
+	conf := config.New(config.WithSource(
+		file.NewSource(flagconf),
+	))
+	if err := conf.Load(); err != nil {
 		panic(err)
 	}
+
+	logger := stdlog.NewLogger(stdlog.Writer(os.Stdout))
 	defer logger.Close()
 
 	log := log.NewHelper("main", logger)
-	log.Infof("version: %s", Version)
+	log.Infow(
+		"version", Version,
+		"branch", Branch,
+		"revision", Revision,
+		"build_date", BuildDate,
+	)
 
-	// transport
-	httpTransport := httptransport.NewServer()
-	grpcTransport := grpctransport.NewServer()
+	var (
+		hc httpconf.Server
+		gc grpcconf.Server
+	)
+	if err := conf.Value("http.server").Scan(&hc); err != nil {
+		panic(err)
+	}
+	if err := conf.Value("grpc.server").Scan(&gc); err != nil {
+		panic(err)
+	}
 
-	// server
-	httpServer := serverhttp.NewServer("tcp", ":8000", serverhttp.Handler(httpTransport))
-	grpcServer := servergrpc.NewServer("tcp", ":9000", grpc.UnaryInterceptor(grpcTransport.Interceptor()))
+	httpSrv := http.NewServer(http.Apply(&hc))
+	grpcSrv := grpc.NewServer(grpc.Apply(&gc))
 
 	// register service
-	gs := service.NewGreeterService()
-	pb.RegisterGreeterServer(grpcServer, gs)
-	pb.RegisterGreeterHTTPServer(httpTransport, gs)
+	ps := service.NewPostService()
+	cs := service.NewCommentService()
+	v1.RegisterPostServer(grpcSrv, ps)
+	v1.RegisterPostHTTPServer(httpSrv, ps)
+	v1.RegisterCommentServer(grpcSrv, cs)
+	v1.RegisterCommentHTTPServer(httpSrv, cs)
 
 	// application lifecycle
 	app := kratos.New()
-	app.Append(httpServer)
-	app.Append(grpcServer)
+	app.Append(httpSrv)
+	app.Append(grpcSrv)
 
 	// start and wait for stop signal
 	if err := app.Run(); err != nil {

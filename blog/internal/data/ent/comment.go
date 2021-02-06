@@ -3,13 +3,13 @@
 package ent
 
 import (
-	"blog/internal/data/ent/comment"
-	"blog/internal/data/ent/post"
 	"fmt"
 	"strings"
 	"time"
 
 	"github.com/facebook/ent/dialect/sql"
+	"github.com/go-kratos/examples/blog/internal/data/ent/comment"
+	"github.com/go-kratos/examples/blog/internal/data/ent/post"
 )
 
 // Comment is the model entity for the Comment schema.

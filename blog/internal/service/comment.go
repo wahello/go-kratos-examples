@@ -1,10 +1,9 @@
-
 package service
 
-import(
+import (
 	"context"
 
-	pb "blog/api/blog/v1"
+	pb "github.com/go-kratos/examples/blog/api/blog/v1"
 )
 
 type CommentService struct {

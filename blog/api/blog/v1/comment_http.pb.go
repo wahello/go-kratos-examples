@@ -13,7 +13,7 @@ import (
 // context./http.
 const _ = http1.SupportPackageIsVersion1
 
-type CommentHTTPServer interface {
+type CommentService interface {
 	CreateComment(context.Context, *CreateCommentRequest) (*CreateCommentReply, error)
 
 	DeleteComment(context.Context, *DeleteCommentRequest) (*DeleteCommentReply, error)
@@ -25,114 +25,102 @@ type CommentHTTPServer interface {
 	UpdateComment(context.Context, *UpdateCommentRequest) (*UpdateCommentReply, error)
 }
 
-func RegisterCommentHTTPServer(s http1.ServiceRegistrar, srv CommentHTTPServer) {
-	s.RegisterService(&_HTTP_Comment_serviceDesc, srv)
-}
+func RegisterCommentHTTPServer(s *http1.Server, srv CommentService) {
+	r := s.Route("/")
 
-func _HTTP_Comment_CreateComment_0(srv interface{}, ctx context.Context, req *http.Request) (interface{}, error) {
-	var in CreateCommentRequest
+	r.POST("/api.blog.v1.Comment/CreateComment", func(res http.ResponseWriter, req *http.Request) {
+		in := new(CreateCommentRequest)
 
-	if err := http1.PopulateForm(&in, req); err != nil {
-		return nil, err
-	}
+		if err := http1.BindForm(req, in); err != nil {
+			s.Error(res, req, err)
+			return
+		}
 
-	out, err := srv.(CommentServer).CreateComment(ctx, &in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
+		h := func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.(CommentService).CreateComment(ctx, in)
+		}
+		out, err := s.Invoke(req.Context(), in, h)
+		if err != nil {
+			s.Error(res, req, err)
+			return
+		}
+		s.Encode(res, req, out)
+	})
 
-func _HTTP_Comment_UpdateComment_0(srv interface{}, ctx context.Context, req *http.Request) (interface{}, error) {
-	var in UpdateCommentRequest
+	r.POST("/api.blog.v1.Comment/UpdateComment", func(res http.ResponseWriter, req *http.Request) {
+		in := new(UpdateCommentRequest)
 
-	if err := http1.PopulateForm(&in, req); err != nil {
-		return nil, err
-	}
+		if err := http1.BindForm(req, in); err != nil {
+			s.Error(res, req, err)
+			return
+		}
 
-	out, err := srv.(CommentServer).UpdateComment(ctx, &in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
+		h := func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.(CommentService).UpdateComment(ctx, in)
+		}
+		out, err := s.Invoke(req.Context(), in, h)
+		if err != nil {
+			s.Error(res, req, err)
+			return
+		}
+		s.Encode(res, req, out)
+	})
 
-func _HTTP_Comment_DeleteComment_0(srv interface{}, ctx context.Context, req *http.Request) (interface{}, error) {
-	var in DeleteCommentRequest
+	r.POST("/api.blog.v1.Comment/DeleteComment", func(res http.ResponseWriter, req *http.Request) {
+		in := new(DeleteCommentRequest)
 
-	if err := http1.PopulateForm(&in, req); err != nil {
-		return nil, err
-	}
+		if err := http1.BindForm(req, in); err != nil {
+			s.Error(res, req, err)
+			return
+		}
 
-	out, err := srv.(CommentServer).DeleteComment(ctx, &in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
+		h := func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.(CommentService).DeleteComment(ctx, in)
+		}
+		out, err := s.Invoke(req.Context(), in, h)
+		if err != nil {
+			s.Error(res, req, err)
+			return
+		}
+		s.Encode(res, req, out)
+	})
 
-func _HTTP_Comment_GetComment_0(srv interface{}, ctx context.Context, req *http.Request) (interface{}, error) {
-	var in GetCommentRequest
+	r.POST("/api.blog.v1.Comment/GetComment", func(res http.ResponseWriter, req *http.Request) {
+		in := new(GetCommentRequest)
 
-	if err := http1.PopulateForm(&in, req); err != nil {
-		return nil, err
-	}
+		if err := http1.BindForm(req, in); err != nil {
+			s.Error(res, req, err)
+			return
+		}
 
-	out, err := srv.(CommentServer).GetComment(ctx, &in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
+		h := func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.(CommentService).GetComment(ctx, in)
+		}
+		out, err := s.Invoke(req.Context(), in, h)
+		if err != nil {
+			s.Error(res, req, err)
+			return
+		}
+		s.Encode(res, req, out)
+	})
 
-func _HTTP_Comment_ListComment_0(srv interface{}, ctx context.Context, req *http.Request) (interface{}, error) {
-	var in ListCommentRequest
+	r.POST("/api.blog.v1.Comment/ListComment", func(res http.ResponseWriter, req *http.Request) {
+		in := new(ListCommentRequest)
 
-	if err := http1.PopulateForm(&in, req); err != nil {
-		return nil, err
-	}
+		if err := http1.BindForm(req, in); err != nil {
+			s.Error(res, req, err)
+			return
+		}
 
-	out, err := srv.(CommentServer).ListComment(ctx, &in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
+		h := func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.(CommentService).ListComment(ctx, in)
+		}
+		out, err := s.Invoke(req.Context(), in, h)
+		if err != nil {
+			s.Error(res, req, err)
+			return
+		}
+		s.Encode(res, req, out)
+	})
 
-var _HTTP_Comment_serviceDesc = http1.ServiceDesc{
-	ServiceName: "api.blog.v1.Comment",
-	HandlerType: (*CommentHTTPServer)(nil),
-	Methods: []http1.MethodDesc{
-
-		{
-			Path:    "/api.blog.v1.Comment/CreateComment",
-			Method:  "POST",
-			Handler: _HTTP_Comment_CreateComment_0,
-		},
-
-		{
-			Path:    "/api.blog.v1.Comment/UpdateComment",
-			Method:  "POST",
-			Handler: _HTTP_Comment_UpdateComment_0,
-		},
-
-		{
-			Path:    "/api.blog.v1.Comment/DeleteComment",
-			Method:  "POST",
-			Handler: _HTTP_Comment_DeleteComment_0,
-		},
-
-		{
-			Path:    "/api.blog.v1.Comment/GetComment",
-			Method:  "POST",
-			Handler: _HTTP_Comment_GetComment_0,
-		},
-
-		{
-			Path:    "/api.blog.v1.Comment/ListComment",
-			Method:  "POST",
-			Handler: _HTTP_Comment_ListComment_0,
-		},
-	},
-	Metadata: "api/blog/v1/comment.proto",
 }

@@ -3,11 +3,11 @@
 package comment
 
 import (
-	"blog/internal/data/ent/predicate"
 	"time"
 
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
+	"github.com/go-kratos/examples/blog/internal/data/ent/predicate"
 )
 
 // ID filters vertices based on their ID field.

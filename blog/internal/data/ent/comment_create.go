@@ -3,8 +3,6 @@
 package ent
 
 import (
-	"blog/internal/data/ent/comment"
-	"blog/internal/data/ent/post"
 	"context"
 	"errors"
 	"fmt"
@@ -12,6 +10,8 @@ import (
 
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
+	"github.com/go-kratos/examples/blog/internal/data/ent/comment"
+	"github.com/go-kratos/examples/blog/internal/data/ent/post"
 )
 
 // CommentCreate is the builder for creating a Comment entity.

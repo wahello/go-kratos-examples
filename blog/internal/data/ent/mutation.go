@@ -3,14 +3,15 @@
 package ent
 
 import (
-	"blog/internal/data/ent/comment"
-	"blog/internal/data/ent/post"
-	"blog/internal/data/ent/predicate"
-	"blog/internal/data/ent/tag"
 	"context"
 	"fmt"
 	"sync"
 	"time"
+
+	"github.com/go-kratos/examples/blog/internal/data/ent/comment"
+	"github.com/go-kratos/examples/blog/internal/data/ent/post"
+	"github.com/go-kratos/examples/blog/internal/data/ent/predicate"
+	"github.com/go-kratos/examples/blog/internal/data/ent/tag"
 
 	"github.com/facebook/ent"
 )
