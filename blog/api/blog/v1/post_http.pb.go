@@ -28,7 +28,7 @@ type PostService interface {
 func RegisterPostHTTPServer(s *http1.Server, srv PostService) {
 	r := s.Route("/")
 
-	r.POST("/api.blog.v1.Post/CreatePost", func(res http.ResponseWriter, req *http.Request) {
+	r.POST("/api.v1.Post/CreatePost", func(res http.ResponseWriter, req *http.Request) {
 		in := new(CreatePostRequest)
 
 		if err := http1.BindForm(req, in); err != nil {
@@ -47,7 +47,7 @@ func RegisterPostHTTPServer(s *http1.Server, srv PostService) {
 		s.Encode(res, req, out)
 	})
 
-	r.POST("/api.blog.v1.Post/UpdatePost", func(res http.ResponseWriter, req *http.Request) {
+	r.POST("/api.v1.Post/UpdatePost", func(res http.ResponseWriter, req *http.Request) {
 		in := new(UpdatePostRequest)
 
 		if err := http1.BindForm(req, in); err != nil {
@@ -66,7 +66,7 @@ func RegisterPostHTTPServer(s *http1.Server, srv PostService) {
 		s.Encode(res, req, out)
 	})
 
-	r.POST("/api.blog.v1.Post/DeletePost", func(res http.ResponseWriter, req *http.Request) {
+	r.POST("/api.v1.Post/DeletePost", func(res http.ResponseWriter, req *http.Request) {
 		in := new(DeletePostRequest)
 
 		if err := http1.BindForm(req, in); err != nil {
@@ -85,7 +85,7 @@ func RegisterPostHTTPServer(s *http1.Server, srv PostService) {
 		s.Encode(res, req, out)
 	})
 
-	r.POST("/api.blog.v1.Post/GetPost", func(res http.ResponseWriter, req *http.Request) {
+	r.POST("/api.v1.Post/GetPost", func(res http.ResponseWriter, req *http.Request) {
 		in := new(GetPostRequest)
 
 		if err := http1.BindForm(req, in); err != nil {
@@ -104,7 +104,7 @@ func RegisterPostHTTPServer(s *http1.Server, srv PostService) {
 		s.Encode(res, req, out)
 	})
 
-	r.POST("/api.blog.v1.Post/ListPost", func(res http.ResponseWriter, req *http.Request) {
+	r.POST("/api.v1.Post/ListPost", func(res http.ResponseWriter, req *http.Request) {
 		in := new(ListPostRequest)
 
 		if err := http1.BindForm(req, in); err != nil {

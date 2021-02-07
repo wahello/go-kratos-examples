@@ -3,10 +3,9 @@
 package hook
 
 import (
+	"blog/internal/data/ent"
 	"context"
 	"fmt"
-
-	"github.com/go-kratos/examples/blog/internal/data/ent"
 )
 
 // The CommentFunc type is an adapter to allow the use of ordinary

@@ -3,16 +3,16 @@
 package ent
 
 import (
+	"blog/internal/data/ent/post"
+	"blog/internal/data/ent/predicate"
+	"blog/internal/data/ent/tag"
 	"context"
 	"fmt"
 	"time"
 
-	"github.com/facebook/ent/dialect/sql"
-	"github.com/facebook/ent/dialect/sql/sqlgraph"
-	"github.com/facebook/ent/schema/field"
-	"github.com/go-kratos/examples/blog/internal/data/ent/post"
-	"github.com/go-kratos/examples/blog/internal/data/ent/predicate"
-	"github.com/go-kratos/examples/blog/internal/data/ent/tag"
+	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
+	"entgo.io/ent/schema/field"
 )
 
 // TagUpdate is the builder for updating Tag entities.
@@ -375,6 +375,13 @@ func (tuo *TagUpdateOne) sqlSave(ctx context.Context) (_node *Tag, err error) {
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Tag.ID for update")}
 	}
 	_spec.Node.ID.Value = id
+	if ps := tuo.mutation.predicates; len(ps) > 0 {
+		_spec.Predicate = func(selector *sql.Selector) {
+			for i := range ps {
+				ps[i](selector)
+			}
+		}
+	}
 	if value, ok := tuo.mutation.Slug(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,

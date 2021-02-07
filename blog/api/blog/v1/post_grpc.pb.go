@@ -34,7 +34,7 @@ func NewPostClient(cc grpc.ClientConnInterface) PostClient {
 
 func (c *postClient) CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*CreatePostReply, error) {
 	out := new(CreatePostReply)
-	err := c.cc.Invoke(ctx, "/api.blog.v1.Post/CreatePost", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.v1.Post/CreatePost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func (c *postClient) CreatePost(ctx context.Context, in *CreatePostRequest, opts
 
 func (c *postClient) UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*UpdatePostReply, error) {
 	out := new(UpdatePostReply)
-	err := c.cc.Invoke(ctx, "/api.blog.v1.Post/UpdatePost", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.v1.Post/UpdatePost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (c *postClient) UpdatePost(ctx context.Context, in *UpdatePostRequest, opts
 
 func (c *postClient) DeletePost(ctx context.Context, in *DeletePostRequest, opts ...grpc.CallOption) (*DeletePostReply, error) {
 	out := new(DeletePostReply)
-	err := c.cc.Invoke(ctx, "/api.blog.v1.Post/DeletePost", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.v1.Post/DeletePost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func (c *postClient) DeletePost(ctx context.Context, in *DeletePostRequest, opts
 
 func (c *postClient) GetPost(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*GetPostReply, error) {
 	out := new(GetPostReply)
-	err := c.cc.Invoke(ctx, "/api.blog.v1.Post/GetPost", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.v1.Post/GetPost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func (c *postClient) GetPost(ctx context.Context, in *GetPostRequest, opts ...gr
 
 func (c *postClient) ListPost(ctx context.Context, in *ListPostRequest, opts ...grpc.CallOption) (*ListPostReply, error) {
 	out := new(ListPostReply)
-	err := c.cc.Invoke(ctx, "/api.blog.v1.Post/ListPost", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.v1.Post/ListPost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -131,7 +131,7 @@ func _Post_CreatePost_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.blog.v1.Post/CreatePost",
+		FullMethod: "/api.v1.Post/CreatePost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServer).CreatePost(ctx, req.(*CreatePostRequest))
@@ -149,7 +149,7 @@ func _Post_UpdatePost_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.blog.v1.Post/UpdatePost",
+		FullMethod: "/api.v1.Post/UpdatePost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServer).UpdatePost(ctx, req.(*UpdatePostRequest))
@@ -167,7 +167,7 @@ func _Post_DeletePost_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.blog.v1.Post/DeletePost",
+		FullMethod: "/api.v1.Post/DeletePost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServer).DeletePost(ctx, req.(*DeletePostRequest))
@@ -185,7 +185,7 @@ func _Post_GetPost_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.blog.v1.Post/GetPost",
+		FullMethod: "/api.v1.Post/GetPost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServer).GetPost(ctx, req.(*GetPostRequest))
@@ -203,7 +203,7 @@ func _Post_ListPost_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.blog.v1.Post/ListPost",
+		FullMethod: "/api.v1.Post/ListPost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServer).ListPost(ctx, req.(*ListPostRequest))
@@ -212,7 +212,7 @@ func _Post_ListPost_Handler(srv interface{}, ctx context.Context, dec func(inter
 }
 
 var _Post_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "api.blog.v1.Post",
+	ServiceName: "api.v1.Post",
 	HandlerType: (*PostServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

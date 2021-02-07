@@ -1,9 +1,9 @@
 package service
 
-import (
+import(
 	"context"
 
-	pb "github.com/go-kratos/examples/blog/api/blog/v1"
+	pb "blog/api/blog/v1"
 )
 
 type PostService struct {
@@ -27,6 +27,5 @@ func (s *PostService) GetPost(ctx context.Context, req *pb.GetPostRequest) (*pb.
 	return &pb.GetPostReply{}, nil
 }
 func (s *PostService) ListPost(ctx context.Context, req *pb.ListPostRequest) (*pb.ListPostReply, error) {
-
 	return &pb.ListPostReply{}, nil
 }

@@ -3,19 +3,19 @@
 package ent
 
 import (
+	"blog/internal/data/ent/comment"
+	"blog/internal/data/ent/post"
+	"blog/internal/data/ent/predicate"
+	"blog/internal/data/ent/tag"
 	"context"
 	"database/sql/driver"
 	"errors"
 	"fmt"
 	"math"
 
-	"github.com/facebook/ent/dialect/sql"
-	"github.com/facebook/ent/dialect/sql/sqlgraph"
-	"github.com/facebook/ent/schema/field"
-	"github.com/go-kratos/examples/blog/internal/data/ent/comment"
-	"github.com/go-kratos/examples/blog/internal/data/ent/post"
-	"github.com/go-kratos/examples/blog/internal/data/ent/predicate"
-	"github.com/go-kratos/examples/blog/internal/data/ent/tag"
+	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
+	"entgo.io/ent/schema/field"
 )
 
 // PostQuery is the builder for querying Post entities.
@@ -65,7 +65,7 @@ func (pq *PostQuery) QueryComments() *CommentQuery {
 		if err := pq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
-		selector := pq.sqlQuery()
+		selector := pq.sqlQuery(ctx)
 		if err := selector.Err(); err != nil {
 			return nil, err
 		}
@@ -87,7 +87,7 @@ func (pq *PostQuery) QueryTags() *TagQuery {
 		if err := pq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
-		selector := pq.sqlQuery()
+		selector := pq.sqlQuery(ctx)
 		if err := selector.Err(); err != nil {
 			return nil, err
 		}
@@ -335,7 +335,7 @@ func (pq *PostQuery) GroupBy(field string, fields ...string) *PostGroupBy {
 		if err := pq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
-		return pq.sqlQuery(), nil
+		return pq.sqlQuery(ctx), nil
 	}
 	return group
 }
@@ -557,7 +557,7 @@ func (pq *PostQuery) querySpec() *sqlgraph.QuerySpec {
 	return _spec
 }
 
-func (pq *PostQuery) sqlQuery() *sql.Selector {
+func (pq *PostQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	builder := sql.Dialect(pq.driver.Dialect())
 	t1 := builder.Table(post.Table)
 	selector := builder.Select(t1.Columns(post.Columns...)...).From(t1)
@@ -852,7 +852,7 @@ func (ps *PostSelect) Scan(ctx context.Context, v interface{}) error {
 	if err := ps.prepareQuery(ctx); err != nil {
 		return err
 	}
-	ps.sql = ps.PostQuery.sqlQuery()
+	ps.sql = ps.PostQuery.sqlQuery(ctx)
 	return ps.sqlScan(ctx, v)
 }
 

@@ -3,17 +3,17 @@
 package ent
 
 import (
+	"blog/internal/data/ent/comment"
+	"blog/internal/data/ent/post"
+	"blog/internal/data/ent/predicate"
+	"blog/internal/data/ent/tag"
 	"context"
 	"fmt"
 	"time"
 
-	"github.com/facebook/ent/dialect/sql"
-	"github.com/facebook/ent/dialect/sql/sqlgraph"
-	"github.com/facebook/ent/schema/field"
-	"github.com/go-kratos/examples/blog/internal/data/ent/comment"
-	"github.com/go-kratos/examples/blog/internal/data/ent/post"
-	"github.com/go-kratos/examples/blog/internal/data/ent/predicate"
-	"github.com/go-kratos/examples/blog/internal/data/ent/tag"
+	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
+	"entgo.io/ent/schema/field"
 )
 
 // PostUpdate is the builder for updating Post entities.
@@ -502,6 +502,13 @@ func (puo *PostUpdateOne) sqlSave(ctx context.Context) (_node *Post, err error) 
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Post.ID for update")}
 	}
 	_spec.Node.ID.Value = id
+	if ps := puo.mutation.predicates; len(ps) > 0 {
+		_spec.Predicate = func(selector *sql.Selector) {
+			for i := range ps {
+				ps[i](selector)
+			}
+		}
+	}
 	if value, ok := puo.mutation.Title(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,

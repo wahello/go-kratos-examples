@@ -3,18 +3,18 @@
 package ent
 
 import (
+	"blog/internal/data/ent/post"
+	"blog/internal/data/ent/predicate"
+	"blog/internal/data/ent/tag"
 	"context"
 	"database/sql/driver"
 	"errors"
 	"fmt"
 	"math"
 
-	"github.com/facebook/ent/dialect/sql"
-	"github.com/facebook/ent/dialect/sql/sqlgraph"
-	"github.com/facebook/ent/schema/field"
-	"github.com/go-kratos/examples/blog/internal/data/ent/post"
-	"github.com/go-kratos/examples/blog/internal/data/ent/predicate"
-	"github.com/go-kratos/examples/blog/internal/data/ent/tag"
+	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
+	"entgo.io/ent/schema/field"
 )
 
 // TagQuery is the builder for querying Tag entities.
@@ -63,7 +63,7 @@ func (tq *TagQuery) QueryPosts() *PostQuery {
 		if err := tq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
-		selector := tq.sqlQuery()
+		selector := tq.sqlQuery(ctx)
 		if err := selector.Err(); err != nil {
 			return nil, err
 		}
@@ -299,7 +299,7 @@ func (tq *TagQuery) GroupBy(field string, fields ...string) *TagGroupBy {
 		if err := tq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
-		return tq.sqlQuery(), nil
+		return tq.sqlQuery(ctx), nil
 	}
 	return group
 }
@@ -491,7 +491,7 @@ func (tq *TagQuery) querySpec() *sqlgraph.QuerySpec {
 	return _spec
 }
 
-func (tq *TagQuery) sqlQuery() *sql.Selector {
+func (tq *TagQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	builder := sql.Dialect(tq.driver.Dialect())
 	t1 := builder.Table(tag.Table)
 	selector := builder.Select(t1.Columns(tag.Columns...)...).From(t1)
@@ -786,7 +786,7 @@ func (ts *TagSelect) Scan(ctx context.Context, v interface{}) error {
 	if err := ts.prepareQuery(ctx); err != nil {
 		return err
 	}
-	ts.sql = ts.TagQuery.sqlQuery()
+	ts.sql = ts.TagQuery.sqlQuery(ctx)
 	return ts.sqlScan(ctx, v)
 }
 

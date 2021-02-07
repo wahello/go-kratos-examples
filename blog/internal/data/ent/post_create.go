@@ -3,16 +3,16 @@
 package ent
 
 import (
+	"blog/internal/data/ent/comment"
+	"blog/internal/data/ent/post"
+	"blog/internal/data/ent/tag"
 	"context"
 	"errors"
 	"fmt"
 	"time"
 
-	"github.com/facebook/ent/dialect/sql/sqlgraph"
-	"github.com/facebook/ent/schema/field"
-	"github.com/go-kratos/examples/blog/internal/data/ent/comment"
-	"github.com/go-kratos/examples/blog/internal/data/ent/post"
-	"github.com/go-kratos/examples/blog/internal/data/ent/tag"
+	"entgo.io/ent/dialect/sql/sqlgraph"
+	"entgo.io/ent/schema/field"
 )
 
 // PostCreate is the builder for creating a Post entity.

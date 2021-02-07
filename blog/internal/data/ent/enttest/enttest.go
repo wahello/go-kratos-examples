@@ -3,13 +3,12 @@
 package enttest
 
 import (
+	"blog/internal/data/ent"
 	"context"
-
-	"github.com/go-kratos/examples/blog/internal/data/ent"
 	// required by schema hooks.
-	_ "github.com/go-kratos/examples/blog/internal/data/ent/runtime"
+	_ "blog/internal/data/ent/runtime"
 
-	"github.com/facebook/ent/dialect/sql/schema"
+	"entgo.io/ent/dialect/sql/schema"
 )
 
 type (

@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package api.blog.v1;
+package api.v1;
 
-option go_package = "blog/api/blog/v1;v1";
+option go_package = "blog/api/v1;v1";
 option java_multiple_files = true;
-option java_package = "api.blog.v1";
+option java_package = "api.v1";
 
 service Post {
     rpc CreatePost (CreatePostRequest) returns (CreatePostReply);
@@ -14,10 +14,7 @@ service Post {
     rpc ListPost (ListPostRequest) returns (ListPostReply);
 }
 
-message CreatePostRequest {
-    string title = 1;
-    string content = 2;
-}
+message CreatePostRequest {}
 message CreatePostReply {}
 
 message UpdatePostRequest {}

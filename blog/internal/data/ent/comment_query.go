@@ -3,17 +3,17 @@
 package ent
 
 import (
+	"blog/internal/data/ent/comment"
+	"blog/internal/data/ent/post"
+	"blog/internal/data/ent/predicate"
 	"context"
 	"errors"
 	"fmt"
 	"math"
 
-	"github.com/facebook/ent/dialect/sql"
-	"github.com/facebook/ent/dialect/sql/sqlgraph"
-	"github.com/facebook/ent/schema/field"
-	"github.com/go-kratos/examples/blog/internal/data/ent/comment"
-	"github.com/go-kratos/examples/blog/internal/data/ent/post"
-	"github.com/go-kratos/examples/blog/internal/data/ent/predicate"
+	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
+	"entgo.io/ent/schema/field"
 )
 
 // CommentQuery is the builder for querying Comment entities.
@@ -63,7 +63,7 @@ func (cq *CommentQuery) QueryPost() *PostQuery {
 		if err := cq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
-		selector := cq.sqlQuery()
+		selector := cq.sqlQuery(ctx)
 		if err := selector.Err(); err != nil {
 			return nil, err
 		}
@@ -299,7 +299,7 @@ func (cq *CommentQuery) GroupBy(field string, fields ...string) *CommentGroupBy 
 		if err := cq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
-		return cq.sqlQuery(), nil
+		return cq.sqlQuery(ctx), nil
 	}
 	return group
 }
@@ -459,7 +459,7 @@ func (cq *CommentQuery) querySpec() *sqlgraph.QuerySpec {
 	return _spec
 }
 
-func (cq *CommentQuery) sqlQuery() *sql.Selector {
+func (cq *CommentQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	builder := sql.Dialect(cq.driver.Dialect())
 	t1 := builder.Table(comment.Table)
 	selector := builder.Select(t1.Columns(comment.Columns...)...).From(t1)
@@ -754,7 +754,7 @@ func (cs *CommentSelect) Scan(ctx context.Context, v interface{}) error {
 	if err := cs.prepareQuery(ctx); err != nil {
 		return err
 	}
-	cs.sql = cs.CommentQuery.sqlQuery()
+	cs.sql = cs.CommentQuery.sqlQuery(ctx)
 	return cs.sqlScan(ctx, v)
 }
 

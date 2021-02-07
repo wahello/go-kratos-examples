@@ -3,13 +3,13 @@
 package ent
 
 import (
+	"blog/internal/data/ent/comment"
+	"blog/internal/data/ent/post"
 	"fmt"
 	"strings"
 	"time"
 
-	"github.com/facebook/ent/dialect/sql"
-	"github.com/go-kratos/examples/blog/internal/data/ent/comment"
-	"github.com/go-kratos/examples/blog/internal/data/ent/post"
+	"entgo.io/ent/dialect/sql"
 )
 
 // Comment is the model entity for the Comment schema.
@@ -32,7 +32,7 @@ type Comment struct {
 // CommentEdges holds the relations/edges for other nodes in the graph.
 type CommentEdges struct {
 	// Post holds the value of the post edge.
-	Post *Post
+	Post *Post `json:"post,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [1]bool
