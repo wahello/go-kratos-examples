@@ -4,10 +4,10 @@ import (
 	"flag"
 	"log"
 
-	grpcconf "github.com/go-kratos/kratos/v2/api/kratos/config/grpc"
-	httpconf "github.com/go-kratos/kratos/v2/api/kratos/config/http"
 	"github.com/go-kratos/kratos/v2/config"
+	"github.com/go-kratos/kratos/v2/config/source"
 	"github.com/go-kratos/kratos/v2/config/source/file"
+	"gopkg.in/yaml.v2"
 )
 
 var flagconf string
@@ -18,35 +18,44 @@ func init() {
 
 func main() {
 	flag.Parse()
-	conf := config.New(config.WithSource(
-		file.NewSource(flagconf),
-	))
-	if err := conf.Load(); err != nil {
-		panic(err)
-	}
-
-	var (
-		hc httpconf.Server
-		gc grpcconf.Server
+	c := config.New(
+		config.WithSource(
+			file.NewSource(flagconf),
+		),
+		config.WithDecoder(func(kv *source.KeyValue, v interface{}) error {
+			return yaml.Unmarshal(kv.Value, v)
+		}),
 	)
-	if err := conf.Value("http.server").Scan(&hc); err != nil {
-		panic(err)
-	}
-	if err := conf.Value("grpc.server").Scan(&gc); err != nil {
+	if err := c.Load(); err != nil {
 		panic(err)
 	}
 
-	if err := conf.Watch("service.name", func(key string, value config.Value) {
+	// key/value
+	name, err := c.Value("service.name").String()
+	if err != nil {
+		panic(err)
+	}
+	log.Printf("service: %s", name)
+
+	// struct
+	var v struct {
+		Serivce struct {
+			Name    string `json:"name"`
+			Version string `json:"version"`
+		} `json:"service"`
+	}
+	if err := c.Scan(&v); err != nil {
+		panic(err)
+	}
+
+	log.Printf("config: %+v", v)
+
+	// watch
+	if err := c.Watch("service.name", func(key string, value config.Value) {
 		log.Printf("config changed: %s = %v\n", key, value)
 	}); err != nil {
 		panic(err)
 	}
-
-	log.Printf("http: %s\n", hc.String())
-	log.Printf("grpc: %s\n", gc.String())
-
-	// http.Apply(hc)
-	// grpc.Apply(gc)
 
 	<-make(chan struct{})
 }

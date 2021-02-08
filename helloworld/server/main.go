@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
+	pb "github.com/go-kratos/examples/helloworld/helloworld"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/errors"
-	pb "github.com/go-kratos/kratos/v2/examples/helloworld/helloworld"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/log/stdlog"
 	"github.com/go-kratos/kratos/v2/middleware"
@@ -40,8 +40,6 @@ func main() {
 
 	log := log.NewHelper("main", logger)
 
-	app := kratos.New()
-
 	httpSrv := http.NewServer(
 		http.Address(":8000"),
 		http.Middleware(
@@ -64,8 +62,13 @@ func main() {
 	pb.RegisterGreeterServer(grpcSrv, s)
 	pb.RegisterGreeterHTTPServer(httpSrv, s)
 
-	app.Append(httpSrv)
-	app.Append(grpcSrv)
+	app := kratos.New(
+		kratos.Name("helloworld"),
+		kratos.Server(
+			httpSrv,
+			grpcSrv,
+		),
+	)
 
 	if err := app.Run(); err != nil {
 		log.Error(err)
