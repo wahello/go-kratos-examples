@@ -5,8 +5,7 @@ import (
 	"log"
 
 	"github.com/go-kratos/kratos/v2/config"
-	"github.com/go-kratos/kratos/v2/config/source"
-	"github.com/go-kratos/kratos/v2/config/source/file"
+	"github.com/go-kratos/kratos/v2/config/file"
 	"gopkg.in/yaml.v2"
 )
 
@@ -22,21 +21,13 @@ func main() {
 		config.WithSource(
 			file.NewSource(flagconf),
 		),
-		config.WithDecoder(func(kv *source.KeyValue, v interface{}) error {
+		config.WithDecoder(func(kv *config.KeyValue, v interface{}) error {
 			return yaml.Unmarshal(kv.Value, v)
 		}),
 	)
 	if err := c.Load(); err != nil {
 		panic(err)
 	}
-
-	// key/value
-	name, err := c.Value("service.name").String()
-	if err != nil {
-		panic(err)
-	}
-	log.Printf("service: %s", name)
-
 	// struct
 	var v struct {
 		Serivce struct {
@@ -49,8 +40,13 @@ func main() {
 	}
 
 	log.Printf("config: %+v", v)
-
-	// watch
+	// key/value
+	name, err := c.Value("service.name").String()
+	if err != nil {
+		panic(err)
+	}
+	log.Printf("service: %s", name)
+	// watch key
 	if err := c.Watch("service.name", func(key string, value config.Value) {
 		log.Printf("config changed: %s = %v\n", key, value)
 	}); err != nil {

@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/facebook/ent v0.5.4 // indirect
-	github.com/go-kratos/kratos/v2 v2.0.0-20210208163818-18c216679cb1
+	github.com/go-kratos/kratos/v2 v2.0.0-20210209030006-8262981d21be
 	github.com/golang/protobuf v1.4.3
 	google.golang.org/genproto v0.0.0-20210114201628-6edceaf6022f
 	google.golang.org/grpc v1.35.0

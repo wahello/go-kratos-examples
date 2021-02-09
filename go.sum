@@ -116,6 +116,8 @@ github.com/go-kratos/kratos/v2 v2.0.0-20210206162932-0f780b480daa/go.mod h1:lUIU
 github.com/go-kratos/kratos/v2 v2.0.0-20210207150143-dfbcbf8dcb50 h1:+1ShjEBWWQerRnLtG3O58tnWmbz9l0VSqyMvD6HEnd4=
 github.com/go-kratos/kratos/v2 v2.0.0-20210208163818-18c216679cb1 h1:PY0e0WA7Eob1VtS6UgLrtrq/yydcYGtApkHlR313yxk=
 github.com/go-kratos/kratos/v2 v2.0.0-20210208163818-18c216679cb1/go.mod h1:7B1O/wQmIlc3PIjNhc8LO1g9w3UyfgC22vHv5JR9WHI=
+github.com/go-kratos/kratos/v2 v2.0.0-20210209030006-8262981d21be h1:asoW3TcsP4WVk6DoV90K7PyjuNZNYqLeT0uSQgk0WBc=
+github.com/go-kratos/kratos/v2 v2.0.0-20210209030006-8262981d21be/go.mod h1:cpvrZKgPH9ap3USQbjnZpp5nZrFMhvqo3REN4LF7oBo=
 github.com/go-ldap/ldap v2.5.1+incompatible/go.mod h1:qfd9rJvER9Q0/D/Sqn1DfHRoBp40uXYvFoEVrNEPqRc=
 github.com/go-logfmt/logfmt v0.3.0/go.mod h1:Qt1PoO58o5twSAckw1HlFXLmHsOX5/0LbT9GBnD5lWE=
 github.com/go-logfmt/logfmt v0.4.0/go.mod h1:3RMwSq7FuexP4Kalkev3ejPJsZTpXXBr9+V4qmtdjCk=
@@ -262,6 +264,7 @@ github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
 github.com/kr/pretty v0.2.0 h1:s5hAObm+yFO5uHYt5dYjxi2rXrsnmRpJx4OYvIWUaQs=
 github.com/kr/pretty v0.2.0/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
+github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0 h1:45sCR5RtlFHMR4UwH9sdQ5TC8v0qDQCHnXt+kaKSTVE=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=

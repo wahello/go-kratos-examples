@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
+	pb "github.com/go-kratos/examples/helloworld/helloworld"
 	"github.com/go-kratos/kratos/v2/errors"
-	pb "github.com/go-kratos/kratos/v2/examples/helloworld/helloworld"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/status"
