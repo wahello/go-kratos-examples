@@ -9,3 +9,6 @@ grpc:
   server:
     address: 0.0.0.0:9000
     timeout: 1s
+db:
+  driver: mysql
+  source: root:password@tcp(127.0.0.1:3306)/testdb

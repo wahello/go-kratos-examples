@@ -6,25 +6,65 @@ option go_package = "blog/api/v1;v1";
 option java_multiple_files = true;
 option java_package = "api.v1";
 
+import "google/api/annotations.proto";
+
 service Post {
-    rpc CreatePost (CreatePostRequest) returns (CreatePostReply);
-    rpc UpdatePost (UpdatePostRequest) returns (UpdatePostReply);
-    rpc DeletePost (DeletePostRequest) returns (DeletePostReply);
-    rpc GetPost (GetPostRequest) returns (GetPostReply);
-    rpc ListPost (ListPostRequest) returns (ListPostReply);
+    rpc CreatePost (CreatePostRequest) returns (CreatePostReply) {
+        option (google.api.http) = {
+            post: "/v1/post/"
+        };
+    }
+    rpc UpdatePost (UpdatePostRequest) returns (UpdatePostReply) {
+        option (google.api.http) = {
+            put: "/v1/post/{id}"
+        };
+    }
+    rpc DeletePost (DeletePostRequest) returns (DeletePostReply) {
+        option (google.api.http) = {
+            delete: "/v1/post/{id}"
+        };
+    }
+    rpc GetPost (GetPostRequest) returns (GetPostReply)  {
+        option (google.api.http) = {
+            get: "/v1/post/{id}"
+        };
+    }
+    rpc ListPost (ListPostRequest) returns (ListPostReply) {
+        option (google.api.http) = {
+            get: "/v1/post/"
+        };
+    }
 }
 
-message CreatePostRequest {}
-message CreatePostReply {}
+message CreatePostRequest {
+    string title = 1;
+    string content = 2;
+}
 
-message UpdatePostRequest {}
-message UpdatePostReply {}
+message CreatePostReply {
+    int64 id = 1;
+}
 
-message DeletePostRequest {}
-message DeletePostReply {}
+message UpdatePostRequest {
+    int64 id = 1;
+    string title = 2;
+    string content = 3;
+}
 
-message GetPostRequest {}
-message GetPostReply {}
+message UpdatePostReply {
+}
 
-message ListPostRequest {}
-message ListPostReply {}
+message DeletePostRequest {
+}
+message DeletePostReply {
+}
+
+message GetPostRequest {
+}
+message GetPostReply {
+}
+
+message ListPostRequest {
+}
+message ListPostReply {
+}

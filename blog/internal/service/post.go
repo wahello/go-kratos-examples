@@ -1,24 +1,42 @@
 package service
 
-import(
+import (
 	"context"
 
+	"github.com/go-kratos/kratos/v2/log"
+
 	pb "blog/api/blog/v1"
+	"blog/internal/biz"
 )
 
 type PostService struct {
 	pb.UnimplementedPostServer
+
+	log *log.Helper
+
+	puc *biz.PostUsecase
 }
 
-func NewPostService() pb.PostServer {
-	return &PostService{}
+func NewPostService(pr biz.PostRepo, logger log.Logger) pb.PostServer {
+	return &PostService{
+		puc: biz.NewPostUsecase(pr, logger),
+		log: log.NewHelper("post", logger),
+	}
 }
 
 func (s *PostService) CreatePost(ctx context.Context, req *pb.CreatePostRequest) (*pb.CreatePostReply, error) {
-	return &pb.CreatePostReply{}, nil
+	err := s.puc.Create(&biz.Post{
+		Title:   req.Title,
+		Content: req.Content,
+	})
+	return &pb.CreatePostReply{}, err
 }
 func (s *PostService) UpdatePost(ctx context.Context, req *pb.UpdatePostRequest) (*pb.UpdatePostReply, error) {
-	return &pb.UpdatePostReply{}, nil
+	err := s.puc.Create(&biz.Post{
+		Title:   req.Title,
+		Content: req.Content,
+	})
+	return &pb.UpdatePostReply{}, err
 }
 func (s *PostService) DeletePost(ctx context.Context, req *pb.DeletePostRequest) (*pb.DeletePostReply, error) {
 	return &pb.DeletePostReply{}, nil

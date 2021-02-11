@@ -1,21 +1,16 @@
 package main
 
 import (
+	"blog/internal/data"
 	"flag"
 	"os"
 
-	pb "blog/api/blog/v1"
-	"blog/internal/service"
-
-	"github.com/go-kratos/kratos/v2"
 	grpcconf "github.com/go-kratos/kratos/v2/api/kratos/config/grpc"
 	httpconf "github.com/go-kratos/kratos/v2/api/kratos/config/http"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/source/file"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/log/stdlog"
-	"github.com/go-kratos/kratos/v2/transport/grpc"
-	"github.com/go-kratos/kratos/v2/transport/http"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
@@ -44,37 +39,31 @@ func main() {
 	logger := stdlog.NewLogger(stdlog.Writer(os.Stdout))
 	defer logger.Close()
 
-	log := log.NewHelper("main", logger)
+	l := log.NewHelper("main", logger)
 
 	// build transport server
 	hc := new(httpconf.Server)
 	gc := new(grpcconf.Server)
+	dc := new(data.DBConfig)
+
 	if err := conf.Value("http.server").Scan(hc); err != nil {
 		panic(err)
 	}
 	if err := conf.Value("grpc.server").Scan(gc); err != nil {
 		panic(err)
 	}
-	httpSrv := http.NewServer(http.Apply(hc), http.Logger(logger))
-	grpcSrv := grpc.NewServer(grpc.Apply(gc), grpc.Logger(logger))
-
-	// register service
-	gs := service.NewPostService()
-	pb.RegisterPostServer(grpcSrv, gs)
-	pb.RegisterPostHTTPServer(httpSrv, gs)
+	if err := conf.Value("db").Scan(dc); err != nil {
+		panic(err)
+	}
 
 	// application lifecycle
-	app := kratos.New(
-		kratos.Name(Name),
-		kratos.Version(Version),
-		kratos.Server(
-			httpSrv,
-			grpcSrv,
-		),
-	)
+	app, err := NewApp(hc, gc, dc, logger)
+	if err != nil {
+		panic(err)
+	}
 
 	// start and wait for stop signal
 	if err := app.Run(); err != nil {
-		log.Errorf("start failed: %v\n", err)
+		l.Errorf("start failed: %v\n", err)
 	}
 }
