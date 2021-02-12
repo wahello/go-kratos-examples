@@ -4,16 +4,17 @@ package v1
 
 import (
 	context "context"
+	middleware "github.com/go-kratos/kratos/v2/middleware"
 	http1 "github.com/go-kratos/kratos/v2/transport/http"
 	http "net/http"
 )
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the kratos package it is being compiled against.
-// context./http.
+// context./http./middleware.
 const _ = http1.SupportPackageIsVersion1
 
-type PostService interface {
+type PostHTTPServer interface {
 	CreatePost(context.Context, *CreatePostRequest) (*CreatePostReply, error)
 
 	DeletePost(context.Context, *DeletePostRequest) (*DeletePostReply, error)
@@ -25,117 +26,140 @@ type PostService interface {
 	UpdatePost(context.Context, *UpdatePostRequest) (*UpdatePostReply, error)
 }
 
-func RegisterPostHTTPServer(s *http1.Server, srv PostService) {
-	r := s.Route("/")
+func RegisterPostHTTPServer(s http1.ServiceRegistrar, srv PostHTTPServer) {
+	s.RegisterService(&_HTTP_Post_serviceDesc, srv)
+}
 
-	r.POST("/v1/post/", func(res http.ResponseWriter, req *http.Request) {
-		in := new(CreatePostRequest)
+func _HTTP_Post_CreatePost_0(srv interface{}, ctx context.Context, req *http.Request, dec func(interface{}) error, m middleware.Middleware) (interface{}, error) {
+	var in CreatePostRequest
 
-		if err := http1.BindForm(req, in); err != nil {
-			s.Error(res, req, err)
-			return
-		}
+	if err := http1.BindQuery(req, &in); err != nil {
+		return nil, err
+	}
 
-		h := func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.(PostService).CreatePost(ctx, in)
-		}
-		out, err := s.Invoke(req.Context(), in, h)
-		if err != nil {
-			s.Error(res, req, err)
-			return
-		}
-		s.Encode(res, req, out)
-	})
+	h := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServer).CreatePost(ctx, &in)
+	}
+	out, err := m(h)(ctx, &in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
 
-	r.PUT("/v1/post/{id}", func(res http.ResponseWriter, req *http.Request) {
-		in := new(UpdatePostRequest)
+func _HTTP_Post_UpdatePost_0(srv interface{}, ctx context.Context, req *http.Request, dec func(interface{}) error, m middleware.Middleware) (interface{}, error) {
+	var in UpdatePostRequest
 
-		if err := http1.BindVars(req, in); err != nil {
-			s.Error(res, req, err)
-			return
-		}
+	if err := http1.BindVars(req, &in); err != nil {
+		return nil, err
+	}
 
-		if err := http1.BindForm(req, in); err != nil {
-			s.Error(res, req, err)
-			return
-		}
+	if err := http1.BindQuery(req, &in); err != nil {
+		return nil, err
+	}
 
-		h := func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.(PostService).UpdatePost(ctx, in)
-		}
-		out, err := s.Invoke(req.Context(), in, h)
-		if err != nil {
-			s.Error(res, req, err)
-			return
-		}
-		s.Encode(res, req, out)
-	})
+	h := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServer).UpdatePost(ctx, &in)
+	}
+	out, err := m(h)(ctx, &in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
 
-	r.DELETE("/v1/post/{id}", func(res http.ResponseWriter, req *http.Request) {
-		in := new(DeletePostRequest)
+func _HTTP_Post_DeletePost_0(srv interface{}, ctx context.Context, req *http.Request, dec func(interface{}) error, m middleware.Middleware) (interface{}, error) {
+	var in DeletePostRequest
 
-		if err := http1.BindVars(req, in); err != nil {
-			s.Error(res, req, err)
-			return
-		}
+	if err := http1.BindVars(req, &in); err != nil {
+		return nil, err
+	}
 
-		if err := http1.BindForm(req, in); err != nil {
-			s.Error(res, req, err)
-			return
-		}
+	if err := http1.BindQuery(req, &in); err != nil {
+		return nil, err
+	}
 
-		h := func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.(PostService).DeletePost(ctx, in)
-		}
-		out, err := s.Invoke(req.Context(), in, h)
-		if err != nil {
-			s.Error(res, req, err)
-			return
-		}
-		s.Encode(res, req, out)
-	})
+	h := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServer).DeletePost(ctx, &in)
+	}
+	out, err := m(h)(ctx, &in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
 
-	r.GET("/v1/post/{id}", func(res http.ResponseWriter, req *http.Request) {
-		in := new(GetPostRequest)
+func _HTTP_Post_GetPost_0(srv interface{}, ctx context.Context, req *http.Request, dec func(interface{}) error, m middleware.Middleware) (interface{}, error) {
+	var in GetPostRequest
 
-		if err := http1.BindVars(req, in); err != nil {
-			s.Error(res, req, err)
-			return
-		}
+	if err := http1.BindVars(req, &in); err != nil {
+		return nil, err
+	}
 
-		if err := http1.BindForm(req, in); err != nil {
-			s.Error(res, req, err)
-			return
-		}
+	if err := http1.BindQuery(req, &in); err != nil {
+		return nil, err
+	}
 
-		h := func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.(PostService).GetPost(ctx, in)
-		}
-		out, err := s.Invoke(req.Context(), in, h)
-		if err != nil {
-			s.Error(res, req, err)
-			return
-		}
-		s.Encode(res, req, out)
-	})
+	h := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServer).GetPost(ctx, &in)
+	}
+	out, err := m(h)(ctx, &in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
 
-	r.GET("/v1/post/", func(res http.ResponseWriter, req *http.Request) {
-		in := new(ListPostRequest)
+func _HTTP_Post_ListPost_0(srv interface{}, ctx context.Context, req *http.Request, dec func(interface{}) error, m middleware.Middleware) (interface{}, error) {
+	var in ListPostRequest
 
-		if err := http1.BindForm(req, in); err != nil {
-			s.Error(res, req, err)
-			return
-		}
+	if err := http1.BindQuery(req, &in); err != nil {
+		return nil, err
+	}
 
-		h := func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.(PostService).ListPost(ctx, in)
-		}
-		out, err := s.Invoke(req.Context(), in, h)
-		if err != nil {
-			s.Error(res, req, err)
-			return
-		}
-		s.Encode(res, req, out)
-	})
+	h := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServer).ListPost(ctx, &in)
+	}
+	out, err := m(h)(ctx, &in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
 
+var _HTTP_Post_serviceDesc = http1.ServiceDesc{
+	ServiceName: "api.v1.Post",
+	Methods: []http1.MethodDesc{
+
+		{
+			Path:    "/v1/post/",
+			Method:  "POST",
+			Handler: _HTTP_Post_CreatePost_0,
+		},
+
+		{
+			Path:    "/v1/post/{id}",
+			Method:  "PUT",
+			Handler: _HTTP_Post_UpdatePost_0,
+		},
+
+		{
+			Path:    "/v1/post/{id}",
+			Method:  "DELETE",
+			Handler: _HTTP_Post_DeletePost_0,
+		},
+
+		{
+			Path:    "/v1/post/{id}",
+			Method:  "GET",
+			Handler: _HTTP_Post_GetPost_0,
+		},
+
+		{
+			Path:    "/v1/post/",
+			Method:  "GET",
+			Handler: _HTTP_Post_ListPost_0,
+		},
+	},
+	Metadata: "api/blog/v1/post.proto",
 }

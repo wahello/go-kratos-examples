@@ -3,10 +3,10 @@ package service
 import (
 	"context"
 
-	"github.com/go-kratos/kratos/v2/log"
+	pb "github.com/go-kratos/examples/blog/api/blog/v1"
+	"github.com/go-kratos/examples/blog/internal/biz"
 
-	pb "blog/api/blog/v1"
-	"blog/internal/biz"
+	"github.com/go-kratos/kratos/v2/log"
 )
 
 type PostService struct {

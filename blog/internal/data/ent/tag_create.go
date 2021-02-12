@@ -3,8 +3,6 @@
 package ent
 
 import (
-	"blog/internal/data/ent/post"
-	"blog/internal/data/ent/tag"
 	"context"
 	"errors"
 	"fmt"
@@ -12,6 +10,8 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/go-kratos/examples/blog/internal/data/ent/post"
+	"github.com/go-kratos/examples/blog/internal/data/ent/tag"
 )
 
 // TagCreate is the builder for creating a Tag entity.

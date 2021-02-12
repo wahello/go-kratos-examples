@@ -1,9 +1,10 @@
 package data
 
 import (
-	"blog/internal/biz"
-	"blog/internal/data/ent"
 	"context"
+
+	"github.com/go-kratos/examples/blog/internal/biz"
+	"github.com/go-kratos/examples/blog/internal/data/ent"
 
 	"github.com/go-kratos/kratos/v2/log"
 	_ "github.com/go-sql-driver/mysql"

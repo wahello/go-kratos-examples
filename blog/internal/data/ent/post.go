@@ -3,12 +3,12 @@
 package ent
 
 import (
-	"blog/internal/data/ent/post"
 	"fmt"
 	"strings"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"github.com/go-kratos/examples/blog/internal/data/ent/post"
 )
 
 // Post is the model entity for the Post schema.

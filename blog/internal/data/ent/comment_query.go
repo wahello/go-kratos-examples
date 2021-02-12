@@ -3,9 +3,6 @@
 package ent
 
 import (
-	"blog/internal/data/ent/comment"
-	"blog/internal/data/ent/post"
-	"blog/internal/data/ent/predicate"
 	"context"
 	"errors"
 	"fmt"
@@ -14,6 +11,9 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/go-kratos/examples/blog/internal/data/ent/comment"
+	"github.com/go-kratos/examples/blog/internal/data/ent/post"
+	"github.com/go-kratos/examples/blog/internal/data/ent/predicate"
 )
 
 // CommentQuery is the builder for querying Comment entities.

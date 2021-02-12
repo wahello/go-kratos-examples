@@ -3,9 +3,6 @@
 package ent
 
 import (
-	"blog/internal/data/ent/post"
-	"blog/internal/data/ent/predicate"
-	"blog/internal/data/ent/tag"
 	"context"
 	"fmt"
 	"time"
@@ -13,6 +10,9 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/go-kratos/examples/blog/internal/data/ent/post"
+	"github.com/go-kratos/examples/blog/internal/data/ent/predicate"
+	"github.com/go-kratos/examples/blog/internal/data/ent/tag"
 )
 
 // TagUpdate is the builder for updating Tag entities.

@@ -3,12 +3,12 @@
 package ent
 
 import (
-	"blog/internal/data/ent/tag"
 	"fmt"
 	"strings"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"github.com/go-kratos/examples/blog/internal/data/ent/tag"
 )
 
 // Tag is the model entity for the Tag schema.

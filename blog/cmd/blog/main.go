@@ -1,16 +1,16 @@
 package main
 
 import (
-	"blog/internal/data"
 	"flag"
 	"os"
 
-	grpcconf "github.com/go-kratos/kratos/v2/api/kratos/config/grpc"
-	httpconf "github.com/go-kratos/kratos/v2/api/kratos/config/http"
+	"github.com/go-kratos/examples/blog/internal/di"
+	"github.com/go-kratos/examples/blog/internal/server"
 	"github.com/go-kratos/kratos/v2/config"
-	"github.com/go-kratos/kratos/v2/config/source/file"
+	"github.com/go-kratos/kratos/v2/config/file"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/log/stdlog"
+	"gopkg.in/yaml.v2"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
@@ -29,35 +29,42 @@ func init() {
 
 func main() {
 	flag.Parse()
-	conf := config.New(config.WithSource(
-		file.NewSource(flagconf),
-	))
+	logger := stdlog.NewLogger(stdlog.Writer(os.Stdout))
+	defer logger.Close()
+
+	conf := config.New(
+		config.WithSource(
+			file.NewSource(flagconf),
+		),
+		config.WithDecoder(func(kv *config.KeyValue, v map[string]interface{}) error {
+			return yaml.Unmarshal(kv.Value, v)
+		}),
+		config.WithLogger(logger),
+	)
 	if err := conf.Load(); err != nil {
 		panic(err)
 	}
 
-	logger := stdlog.NewLogger(stdlog.Writer(os.Stdout))
-	defer logger.Close()
-
 	l := log.NewHelper("main", logger)
 
-	// build transport server
-	hc := new(httpconf.Server)
-	gc := new(grpcconf.Server)
-	dc := new(data.DBConfig)
+	var (
+		sc di.Service
+		hc server.HTTPConfig
+		gc server.GRPCConfig
+	)
 
-	if err := conf.Value("http.server").Scan(hc); err != nil {
+	if err := conf.Value("service").Scan(&sc); err != nil {
 		panic(err)
 	}
-	if err := conf.Value("grpc.server").Scan(gc); err != nil {
+	if err := conf.Value("http.server").Scan(&hc); err != nil {
 		panic(err)
 	}
-	if err := conf.Value("db").Scan(dc); err != nil {
+	if err := conf.Value("grpc.server").Scan(&gc); err != nil {
 		panic(err)
 	}
 
 	// application lifecycle
-	app, err := NewApp(hc, gc, dc, logger)
+	app, err := di.InitApp(&sc, &hc, &gc, logger)
 	if err != nil {
 		panic(err)
 	}

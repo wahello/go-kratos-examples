@@ -3,14 +3,14 @@
 package ent
 
 import (
-	"blog/internal/data/ent/predicate"
-	"blog/internal/data/ent/tag"
 	"context"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/go-kratos/examples/blog/internal/data/ent/predicate"
+	"github.com/go-kratos/examples/blog/internal/data/ent/tag"
 )
 
 // TagDelete is the builder for deleting a Tag entity.

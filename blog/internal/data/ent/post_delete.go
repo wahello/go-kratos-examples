@@ -3,14 +3,14 @@
 package ent
 
 import (
-	"blog/internal/data/ent/post"
-	"blog/internal/data/ent/predicate"
 	"context"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/go-kratos/examples/blog/internal/data/ent/post"
+	"github.com/go-kratos/examples/blog/internal/data/ent/predicate"
 )
 
 // PostDelete is the builder for deleting a Post entity.
