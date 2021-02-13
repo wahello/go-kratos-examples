@@ -14,36 +14,40 @@ type PostService struct {
 
 	log *log.Helper
 
-	puc *biz.PostUsecase
+	post *biz.PostUsecase
 }
 
-func NewPostService(pr biz.PostRepo, logger log.Logger) pb.PostServer {
+func NewPostService(post *biz.PostUsecase, logger log.Logger) *PostService {
 	return &PostService{
-		puc: biz.NewPostUsecase(pr, logger),
-		log: log.NewHelper("post", logger),
+		post: post,
+		log:  log.NewHelper("post", logger),
 	}
 }
 
 func (s *PostService) CreatePost(ctx context.Context, req *pb.CreatePostRequest) (*pb.CreatePostReply, error) {
-	err := s.puc.Create(&biz.Post{
+	err := s.post.Create(&biz.Post{
 		Title:   req.Title,
 		Content: req.Content,
 	})
 	return &pb.CreatePostReply{}, err
 }
+
 func (s *PostService) UpdatePost(ctx context.Context, req *pb.UpdatePostRequest) (*pb.UpdatePostReply, error) {
-	err := s.puc.Create(&biz.Post{
+	err := s.post.Create(&biz.Post{
 		Title:   req.Title,
 		Content: req.Content,
 	})
 	return &pb.UpdatePostReply{}, err
 }
+
 func (s *PostService) DeletePost(ctx context.Context, req *pb.DeletePostRequest) (*pb.DeletePostReply, error) {
 	return &pb.DeletePostReply{}, nil
 }
+
 func (s *PostService) GetPost(ctx context.Context, req *pb.GetPostRequest) (*pb.GetPostReply, error) {
 	return &pb.GetPostReply{}, nil
 }
+
 func (s *PostService) ListPost(ctx context.Context, req *pb.ListPostRequest) (*pb.ListPostReply, error) {
 	return &pb.ListPostReply{}, nil
 }
