@@ -29,7 +29,7 @@ func _HTTP_Greeter_SayHello_0(srv interface{}, ctx context.Context, req *http.Re
 		return nil, err
 	}
 
-	if err := http1.BindQuery(req, &in); err != nil {
+	if err := http1.BindForm(req, &in); err != nil {
 		return nil, err
 	}
 

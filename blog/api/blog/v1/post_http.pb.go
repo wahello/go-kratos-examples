@@ -33,7 +33,7 @@ func RegisterPostHTTPServer(s http1.ServiceRegistrar, srv PostHTTPServer) {
 func _HTTP_Post_CreatePost_0(srv interface{}, ctx context.Context, req *http.Request, dec func(interface{}) error, m middleware.Middleware) (interface{}, error) {
 	var in CreatePostRequest
 
-	if err := http1.BindQuery(req, &in); err != nil {
+	if err := http1.BindForm(req, &in); err != nil {
 		return nil, err
 	}
 
@@ -54,7 +54,7 @@ func _HTTP_Post_UpdatePost_0(srv interface{}, ctx context.Context, req *http.Req
 		return nil, err
 	}
 
-	if err := http1.BindQuery(req, &in); err != nil {
+	if err := http1.BindForm(req, &in); err != nil {
 		return nil, err
 	}
 
@@ -75,7 +75,7 @@ func _HTTP_Post_DeletePost_0(srv interface{}, ctx context.Context, req *http.Req
 		return nil, err
 	}
 
-	if err := http1.BindQuery(req, &in); err != nil {
+	if err := http1.BindForm(req, &in); err != nil {
 		return nil, err
 	}
 
@@ -96,7 +96,7 @@ func _HTTP_Post_GetPost_0(srv interface{}, ctx context.Context, req *http.Reques
 		return nil, err
 	}
 
-	if err := http1.BindQuery(req, &in); err != nil {
+	if err := http1.BindForm(req, &in); err != nil {
 		return nil, err
 	}
 
@@ -113,7 +113,7 @@ func _HTTP_Post_GetPost_0(srv interface{}, ctx context.Context, req *http.Reques
 func _HTTP_Post_ListPost_0(srv interface{}, ctx context.Context, req *http.Request, dec func(interface{}) error, m middleware.Middleware) (interface{}, error) {
 	var in ListPostRequest
 
-	if err := http1.BindQuery(req, &in); err != nil {
+	if err := http1.BindForm(req, &in); err != nil {
 		return nil, err
 	}
 
@@ -161,5 +161,5 @@ var _HTTP_Post_serviceDesc = http1.ServiceDesc{
 			Handler: _HTTP_Post_ListPost_0,
 		},
 	},
-	Metadata: "api/blog/v1/post.proto",
+	Metadata: "blog/v1/post.proto",
 }

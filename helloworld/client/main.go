@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"net/http"
 
 	pb "github.com/go-kratos/examples/helloworld/helloworld"
 	"github.com/go-kratos/kratos/v2/errors"
@@ -23,25 +24,33 @@ func callHTTP() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	res, err := client.Get("http://127.0.0.1:8000/helloworld/kratos")
+	req, err := http.NewRequest("GET", "http://127.0.0.1:8000/helloworld/bob", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	if err := transhttp.CheckResponse(res); err != nil {
+	res, err := client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err := client.CheckResponse(res); err != nil {
 		log.Fatal(err)
 	}
 	reply := new(pb.HelloReply)
-	if err := transhttp.DecodeResponse(res, &reply); err != nil {
+	if err := client.DecodeResponse(res, &reply); err != nil {
 		log.Fatal(err)
 	}
 	log.Printf("[http] hello %s\n", reply.Message)
 
 	// returns error
-	res, err = client.Get("http://127.0.0.1:8000/helloworld/error")
+	req, err = http.NewRequest("GET", "http://127.0.0.1:8000/helloworld/error", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	if err = transhttp.CheckResponse(res); err != nil {
+	res, err = client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err = client.CheckResponse(res); err != nil {
 		log.Printf("[http] SayHello error: %v\n", err)
 	}
 	if errors.IsInvalidArgument(err) {
